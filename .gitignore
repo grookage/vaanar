@@ -22,3 +22,23 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Misc
+
+.idea
+*.iws
+*.ipr
+*.iml
+/out/
+.idea_modules/
+atlassian-ide-plugin.xml
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+dependency-reduced-pom.xml
+target/
+*/test-classes/*
+\$*
+.DS_Store
+
