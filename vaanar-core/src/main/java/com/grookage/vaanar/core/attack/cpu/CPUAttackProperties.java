@@ -35,6 +35,9 @@ public class CPUAttackProperties extends AttackProperties {
     private long threadSleepDurationMs = 500;
 
     public CPUAttackProperties(String name,
+                               boolean enabled,
+                               boolean repeatable,
+                               boolean interpretable,
                                long initialDelayMs,
                                long executeAfterDelayMs,
                                long executeUntilDelayMs,
@@ -42,7 +45,8 @@ public class CPUAttackProperties extends AttackProperties {
                                double targetLoad,
                                double leeway,
                                long threadSleepDurationMs) {
-        super(AttackType.CPU, name, initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
+        super(AttackType.CPU, name, enabled, repeatable, interpretable,
+                initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
         this.holdLoadMs = holdLoadMs;
         this.targetLoad = targetLoad;
         this.leeway = leeway;

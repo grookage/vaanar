@@ -25,7 +25,6 @@
         <mockito.version>4.2.0</mockito.version>
         <jackson.version>2.17.0</jackson.version>
         <dropwizard.version>2.1.10</dropwizard.version>
-        <aspectjrt.version>1.9.8</aspectjrt.version>
         <dropwizard.version>2.1.10</dropwizard.version>
         <awaitility.version>4.1.1</awaitility.version>
     </properties>

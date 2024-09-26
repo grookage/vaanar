@@ -31,10 +31,14 @@ import lombok.NoArgsConstructor;
 public class SigtermAttackProperties extends AttackProperties {
 
     public SigtermAttackProperties(final String name,
+                                   final boolean enabled,
+                                   final boolean repeatable,
+                                   final boolean interpretable,
                                    long initialDelayMs,
                                    long executeAfterDelayMs,
                                    long executeUntilDelayMs) {
-        super(AttackType.SIGTERM, name, initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
+        super(AttackType.SIGTERM, name, enabled, repeatable, interpretable,
+                initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
     }
 
     @Override

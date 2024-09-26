@@ -45,19 +45,16 @@ public class AttackExecutor {
 
     public void start() {
         log.info("Starting Chaos for properties {}", attackProperties);
-        executorFuture = this.executorService.scheduleWithFixedDelay(attackRunner,
-                attackProperties.getInitialDelayMs(),
-                attackProperties.getExecuteAfterDelayMs(),
-                TimeUnit.MILLISECONDS);
-        this.executorService.schedule(() -> {
-            executorFuture.cancel(true);
-        }, attackProperties.getExecuteUntilTimeMs(), TimeUnit.MILLISECONDS);
-    }
-
-    public void stop() {
-        log.info("Stopping Chaos for properties {}", attackProperties);
-        if (null != executorFuture) {
-            executorFuture.cancel(true);
+        if (attackProperties.isRepeatable()) {
+            executorFuture = this.executorService.scheduleWithFixedDelay(attackRunner,
+                    attackProperties.getInitialDelayMs(),
+                    attackProperties.getExecuteAfterDelayMs(),
+                    TimeUnit.MILLISECONDS);
+            this.executorService.schedule(() -> {
+                executorFuture.cancel(true);
+            }, attackProperties.getExecuteUntilTimeMs(), TimeUnit.MILLISECONDS);
+        } else {
+            this.attackRunner.run();
         }
     }
 

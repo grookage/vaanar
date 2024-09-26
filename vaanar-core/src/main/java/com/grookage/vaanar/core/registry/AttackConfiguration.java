@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.grookage.vaanar.core.engine;
+package com.grookage.vaanar.core.registry;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grookage.vaanar.core.attack.AttackProperties;

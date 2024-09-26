@@ -31,10 +31,14 @@ import lombok.NoArgsConstructor;
 public class ExceptionAttackProperties extends AttackProperties {
 
     public ExceptionAttackProperties(final String name,
+                                     final boolean enabled,
+                                     final boolean repeatable,
+                                     final boolean interpretable,
                                      long initialDelayMs,
                                      long executeAfterDelayMs,
                                      long executeUntilDelayMs) {
-        super(AttackType.EXCEPTION, name, initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
+        super(AttackType.EXCEPTION, name, enabled, repeatable, interpretable,
+                initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
     }
 
     @Override

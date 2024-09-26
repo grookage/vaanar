@@ -35,6 +35,9 @@ public class MemoryAttackProperties extends AttackProperties {
     private double target = 0.25;
 
     public MemoryAttackProperties(final String name,
+                                  final boolean enabled,
+                                  final boolean repeatable,
+                                  final boolean interpretable,
                                   long initialDelayMs,
                                   long executeAfterDelayMs,
                                   long executeUntilDelayMs,
@@ -42,7 +45,8 @@ public class MemoryAttackProperties extends AttackProperties {
                                   long nextIncreaseWaitMs,
                                   long increment,
                                   long target) {
-        super(AttackType.MEMORY, name, initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
+        super(AttackType.MEMORY, name, enabled, repeatable, interpretable,
+                initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
         this.holdTimeMs = holdTimeMs;
         this.nextIncreaseWaitMs = nextIncreaseWaitMs;
         this.increment = increment;

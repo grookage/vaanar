@@ -17,9 +17,9 @@
 package com.grookage.vaanar.dw;
 
 import com.grookage.vaanar.core.attack.AttackProperties;
+import com.grookage.vaanar.core.attack.Attacker;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
-import com.grookage.vaanar.core.engine.AttackConfiguration;
-import com.grookage.vaanar.core.engine.VaanarEngine;
+import com.grookage.vaanar.core.registry.AttackConfiguration;
 import com.grookage.vaanar.core.registry.AttackRegistryUtils;
 import com.grookage.vaanar.dw.health.VaanarHealthCheck;
 import com.grookage.vaanar.dw.lifecycle.VaanarLifecycle;
@@ -36,12 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Data
 @Getter
 @Slf4j
 public abstract class VaanarBundle<T extends Configuration> implements ConfiguredBundle<T> {
-
-    private VaanarEngine vaanarEngine;
 
     protected abstract AttackConfiguration getAttackConfiguration(T configuration);
 
@@ -67,19 +66,22 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
         final var attackProperties = null == attackConfiguration ? new ArrayList<AttackProperties>() :
                 attackConfiguration.getAttackProperties();
         final var additionalAttackers = getAdditionalAttackers(configuration, environment).orElse(null);
-        final var attackRegistry = AttackRegistryUtils.buildAttackRegistry(
-                attackProperties, additionalAttackers
-        );
-        this.vaanarEngine = new VaanarEngine(attackRegistry, attackConfiguration);
+        AttackRegistryUtils.initialize(attackProperties, additionalAttackers);
+        final var attackRegistry = AttackRegistryUtils.getAttackRegistry();
         environment.lifecycle().manage(new Managed() {
             @Override
             public void start() {
-                vaanarEngine.start();
+                log.info("Starting Monkey Business");
+                attackRegistry.attackers()
+                        .stream()
+                        .filter(each -> !each.getAttackProperties().isInterpretable())
+                        .forEach(Attacker::setupAttack);
+                log.info("Started Monkey Business");
             }
 
             @Override
             public void stop() {
-                vaanarEngine.stop();
+                log.info("Stopped Monkey Business");
             }
         });
         withLifecycleManagers(configuration)
@@ -99,3 +101,4 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
         environment.jersey().register(new VaanarResource(attackRegistry, additionalAttackers));
     }
 }
+

@@ -27,9 +27,5 @@ public interface Attacker {
 
     void attack();
 
-    String setupAttack();
-
-    void cancelAttack(final String executorId);
-
-    void cancelAllAttacks();
+    void setupAttack();
 }

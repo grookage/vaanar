@@ -31,10 +31,14 @@ import lombok.NoArgsConstructor;
 public class CustomAttackProperties extends AttackProperties {
 
     public CustomAttackProperties(final String name,
+                                  final boolean enabled,
+                                  final boolean repeatable,
+                                  final boolean interpretable,
                                   long initialDelayMs,
                                   long executeAfterDelayMs,
                                   long executeUntilDelayMs) {
-        super(AttackType.CUSTOM, name, initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
+        super(AttackType.CUSTOM, name, enabled, repeatable, interpretable,
+                initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
     }
 
     @Override
