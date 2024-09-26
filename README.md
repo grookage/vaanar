@@ -63,7 +63,7 @@ Therefore, configuration needs to be put into your pom file in the `build/plugin
                     </dependencies>
 
                     <configuration>
-                        <complianceLevel>1.8</complianceLevel>
+                        <complianceLevel>17</complianceLevel>
                         <source>17</source>
                         <target>17</target>
                         <showWeaveInfo>true</showWeaveInfo>
@@ -121,8 +121,10 @@ If you don't have aspectjrt
 
 #### Preparing a function for attack
 
-Annotate the method with `@AttackFunction` with the appropriate attackName specified in the config.
-Only interpretable attacks are executed, rest are gracefully ignored
+There are two kinds of attacks. 
+
+- Attacks that can start when the application starts - not interpretable by nature
+- Interpretable attacks - For this, Annotate the method with `@AttackFunction` with the appropriate attackName specified in the config
 
 For example:
 ```
