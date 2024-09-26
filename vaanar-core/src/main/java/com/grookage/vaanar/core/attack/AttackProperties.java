@@ -47,7 +47,6 @@ import javax.validation.constraints.NotNull;
 public abstract class AttackProperties {
     @NotNull
     private AttackType type;
-    @NotNull
     private String name;
     private boolean enabled = false;
     private boolean repeatable = false;
