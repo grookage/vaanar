@@ -43,23 +43,12 @@ public class AttackRegistry {
         return Optional.ofNullable(registry.get(name.toUpperCase(Locale.ROOT)));
     }
 
-    public void pauseAttackers(final Set<String> attackers) {
-        attackers.forEach(attacker -> {
-            final var probableAttacker = getAttacker(attacker);
-            probableAttacker.ifPresent(Attacker::disable);
-        });
-
-    }
-
-    public void unpauseAttackers(final Set<String> attackers) {
-        attackers.forEach(attacker -> {
-            final var probableAttacker = getAttacker(attacker);
-            probableAttacker.ifPresent(Attacker::enable);
-        });
-    }
-
     public List<AttackProperties> getAttackProperties() {
         return registry.values().stream().map(Attacker::getAttackProperties).toList();
+    }
+
+    public Collection<Attacker> attackers() {
+        return registry.values();
     }
 
 }

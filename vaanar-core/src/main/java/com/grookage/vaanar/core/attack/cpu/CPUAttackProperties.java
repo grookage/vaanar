@@ -20,7 +20,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grookage.vaanar.core.attack.AttackProperties;
 import com.grookage.vaanar.core.attack.AttackPropertyAcceptor;
 import com.grookage.vaanar.core.attack.AttackType;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -33,12 +35,14 @@ public class CPUAttackProperties extends AttackProperties {
     private long threadSleepDurationMs = 500;
 
     public CPUAttackProperties(String name,
-                               boolean active,
+                               long initialDelayMs,
+                               long executeAfterDelayMs,
+                               long executeUntilDelayMs,
                                int holdLoadMs,
                                double targetLoad,
                                double leeway,
                                long threadSleepDurationMs) {
-        super(AttackType.CPU, name, active);
+        super(AttackType.CPU, name, initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
         this.holdLoadMs = holdLoadMs;
         this.targetLoad = targetLoad;
         this.leeway = leeway;

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package com.grookage.vaanar.core.scheduler;
+package com.grookage.vaanar.core.engine;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grookage.vaanar.core.attack.AttackProperties;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +31,5 @@ import java.util.List;
 public class AttackConfiguration {
 
     private boolean enableDestruction = false;
-    @Builder.Default
     private List<AttackProperties> attackProperties = List.of();
 }

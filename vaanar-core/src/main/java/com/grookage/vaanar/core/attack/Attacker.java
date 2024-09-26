@@ -16,27 +16,20 @@
 
 package com.grookage.vaanar.core.attack;
 
+/*
+DO NOT implement attacker directly. Please extend AbstractAttacker instead
+ */
 public interface Attacker {
 
     AttackProperties getAttackProperties();
 
-    default String name() {
-        return getAttackProperties().getName();
-    }
-
-    default boolean active() {
-        return getAttackProperties().isActive();
-    }
+    String name();
 
     void attack();
 
-    void initialize();
+    String setupAttack();
 
-    default void enable() {
-        getAttackProperties().setActive(true);
-    }
+    void cancelAttack(final String executorId);
 
-    default void disable() {
-        getAttackProperties().setActive(false);
-    }
+    void cancelAllAttacks();
 }

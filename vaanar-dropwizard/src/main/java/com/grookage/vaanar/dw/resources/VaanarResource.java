@@ -19,6 +19,7 @@ package com.grookage.vaanar.dw.resources;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.grookage.vaanar.core.attack.AttackProperties;
+import com.grookage.vaanar.core.attack.Attacker;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
 import com.grookage.vaanar.core.registry.AttackRegistry;
 import com.grookage.vaanar.core.registry.AttackRegistryUtils;
@@ -33,7 +34,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Set;
 
 @Singleton
 @Getter
@@ -59,24 +59,6 @@ public class VaanarResource {
     @POST
     @Timed
     @ExceptionMetered
-    @Path("/{attackName}/active")
-    private Response activateAttacker(@PathParam("attackName") @NotNull final String attackName) {
-        attackRegistry.unpauseAttackers(Set.of(attackName));
-        return Response.ok().build();
-    }
-
-    @POST
-    @Timed
-    @ExceptionMetered
-    @Path("/{attackName}/pause")
-    private Response pauseAttacker(@PathParam("attackName") @NotNull final String attackName) {
-        attackRegistry.pauseAttackers(Set.of(attackName));
-        return Response.ok().build();
-    }
-
-    @POST
-    @Timed
-    @ExceptionMetered
     @Path("/add")
     private Response addAttacker(AttackProperties attackProperty) {
         final var probableAttacker = AttackRegistryUtils.getAttacker(attackProperty, attackerFactory);
@@ -85,5 +67,68 @@ public class VaanarResource {
                 attacker
         ));
         return Response.ok().build();
+    }
+
+    @POST
+    @Timed
+    @ExceptionMetered
+    @Path("/{attackName}/attack")
+    private Response attack(@PathParam("attackName") @NotNull final String attackName) {
+        final var attacker = attackRegistry.getAttacker(attackName).orElse(null);
+        if (null == attacker) {
+            return Response.status(400)
+                    .entity("No Monkey Found for attack " + attackName + "Can't assault at this time.")
+                    .build();
+        }
+        final var attackId = attacker.setupAttack();
+        return Response.ok()
+                .entity("Started the attack with attackName " + attackName + " and attackId: " + attackId)
+                .build();
+    }
+
+    @POST
+    @Timed
+    @ExceptionMetered
+    @Path("/{attackName}/{attackId}/cancel")
+    private Response attack(@PathParam("attackName") @NotNull final String attackName,
+                            @PathParam("attackId") @NotNull final String attackId) {
+        final var attacker = attackRegistry.getAttacker(attackName).orElse(null);
+        if (null == attacker) {
+            return Response.status(400)
+                    .entity("No Monkey Found for attackName " + attackName + "Can't attack at this time.")
+                    .build();
+        }
+        attacker.cancelAttack(attackId);
+        return Response.ok()
+                .entity("Cancelled the attack with attackName " + attackName + " and attackId: " + attackId)
+                .build();
+    }
+
+    @POST
+    @Timed
+    @ExceptionMetered
+    @Path("/{attackName}/attack/cancel")
+    private Response cancelAttacks(@PathParam("attackName") @NotNull final String attackName) {
+        final var attacker = attackRegistry.getAttacker(attackName).orElse(null);
+        if (null == attacker) {
+            return Response.status(400)
+                    .entity("No Monkey Found for attackName " + attackName + "Can't attack at this time.")
+                    .build();
+        }
+        attacker.cancelAllAttacks();
+        return Response.ok()
+                .entity("Cancelled all attacks with attackName " + attackName)
+                .build();
+    }
+
+    @POST
+    @Timed
+    @ExceptionMetered
+    @Path("/cancel")
+    private Response cancelAllAttacks(@PathParam("attackName") @NotNull final String attackName) {
+        attackRegistry.attackers().forEach(Attacker::cancelAllAttacks);
+        return Response.ok()
+                .entity("Cancelled all attacks with attackName " + attackName)
+                .build();
     }
 }

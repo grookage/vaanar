@@ -14,15 +14,33 @@
  * limitations under the License.
  */
 
-package com.grookage.vaanar.core.scheduler;
+package com.grookage.vaanar.core.engine;
 
+import com.grookage.vaanar.core.attack.Attacker;
 import com.grookage.vaanar.core.registry.AttackRegistry;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @Data
-public class ChaosMaster {
+@Slf4j
+public class VaanarEngine {
 
     private final AttackRegistry attackRegistry;
+    private final AttackConfiguration attackConfiguration;
+
+    public void start() {
+        if (null == attackConfiguration || !attackConfiguration.isEnableDestruction()) {
+            log.info("Oops, no monkey business is enabled. Tough luck. Exiting!");
+        }
+        attackRegistry.attackers().forEach(Attacker::setupAttack);
+        log.info("Started Monkey Business");
+    }
+
+    public void stop() {
+        log.info("Stopping the Monkey Business");
+        attackRegistry.attackers().forEach(Attacker::cancelAllAttacks);
+        log.info("Stopped the Monkey Business");
+    }
 }

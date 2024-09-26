@@ -50,7 +50,7 @@ public class AttackRegistryUtils {
             final AttackProperties attackProperty,
             final CustomAttackerFactory additionalAttackers
     ) {
-        return  attackProperty.accept(new AttackPropertyAcceptor<>() {
+        return attackProperty.accept(new AttackPropertyAcceptor<>() {
             @Override
             public Optional<Attacker> accept(CPUAttackProperties properties) {
                 return Optional.of(new CPUAttacker(properties));

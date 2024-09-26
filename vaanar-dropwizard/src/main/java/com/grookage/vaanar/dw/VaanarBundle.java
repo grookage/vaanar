@@ -18,9 +18,9 @@ package com.grookage.vaanar.dw;
 
 import com.grookage.vaanar.core.attack.AttackProperties;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
-import com.grookage.vaanar.core.registry.AttackRegistry;
+import com.grookage.vaanar.core.engine.AttackConfiguration;
+import com.grookage.vaanar.core.engine.VaanarEngine;
 import com.grookage.vaanar.core.registry.AttackRegistryUtils;
-import com.grookage.vaanar.core.scheduler.AttackConfiguration;
 import com.grookage.vaanar.dw.health.VaanarHealthCheck;
 import com.grookage.vaanar.dw.lifecycle.VaanarLifecycle;
 import com.grookage.vaanar.dw.resources.VaanarResource;
@@ -41,7 +41,7 @@ import java.util.Optional;
 @Slf4j
 public abstract class VaanarBundle<T extends Configuration> implements ConfiguredBundle<T> {
 
-    private AttackRegistry attackRegistry;
+    private VaanarEngine vaanarEngine;
 
     protected abstract AttackConfiguration getAttackConfiguration(T configuration);
 
@@ -67,11 +67,21 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
         final var attackProperties = null == attackConfiguration ? new ArrayList<AttackProperties>() :
                 attackConfiguration.getAttackProperties();
         final var additionalAttackers = getAdditionalAttackers(configuration, environment).orElse(null);
-
-        this.attackRegistry = AttackRegistryUtils.buildAttackRegistry(
+        final var attackRegistry = AttackRegistryUtils.buildAttackRegistry(
                 attackProperties, additionalAttackers
         );
+        this.vaanarEngine = new VaanarEngine(attackRegistry, attackConfiguration);
+        environment.lifecycle().manage(new Managed() {
+            @Override
+            public void start() {
+                vaanarEngine.start();
+            }
 
+            @Override
+            public void stop() {
+                vaanarEngine.stop();
+            }
+        });
         withLifecycleManagers(configuration)
                 .forEach(lifecycle -> environment.lifecycle().manage(new Managed() {
                     @Override

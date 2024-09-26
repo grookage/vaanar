@@ -41,7 +41,9 @@ public abstract class AttackProperties {
     private AttackType type;
     @NotNull
     private String name;
-    private boolean active = false;
+    private long initialDelayMs = 0L;
+    private long executeAfterDelayMs = 0L;
+    private long executeUntilTimeMs = 30000L;
 
     public abstract <T> T accept(AttackPropertyAcceptor<T> acceptor);
 }

@@ -17,9 +17,7 @@
 package com.grookage.vaanar.core.attack;
 
 import com.grookage.vaanar.core.attack.cpu.CPUAttackProperties;
-import com.grookage.vaanar.core.attack.cpu.CPUAttacker;
 import com.grookage.vaanar.core.attack.custom.CustomAttackProperties;
-import com.grookage.vaanar.core.attack.custom.CustomAttacker;
 
 public interface AttackPropertyAcceptor<T> {
 

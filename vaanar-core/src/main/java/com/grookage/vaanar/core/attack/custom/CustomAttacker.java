@@ -16,7 +16,7 @@
 
 package com.grookage.vaanar.core.attack.custom;
 
-import com.grookage.vaanar.core.attack.Attacker;
+import com.grookage.vaanar.core.attack.AbstractAttacker;
 
-public interface CustomAttacker extends Attacker {
+public abstract class CustomAttacker extends AbstractAttacker {
 }
