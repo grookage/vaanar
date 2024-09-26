@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.grookage.vaanar</groupId>
+        <artifactId>vaanar-parent</artifactId>
+        <version>0.0.1-RC1</version>
+        <relativePath>../vaanar-parent</relativePath>
+    </parent>
+
+    <artifactId>vaanar-dropwizard</artifactId>
+
+    <properties>
+        <dropwizard.version>2.1.10</dropwizard.version>
+        <maven.deploy.skip>false</maven.deploy.skip>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <artifactId>dropwizard-core</artifactId>
+            <groupId>io.dropwizard</groupId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.dropwizard/dropwizard-validation -->
+        <dependency>
+            <artifactId>dropwizard-validation</artifactId>
+            <groupId>io.dropwizard</groupId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.grookage.vaanar</groupId>
+            <artifactId>vaanar-core</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
