@@ -33,13 +33,9 @@ public abstract class AbstractAttacker implements Attacker {
     private String name;
     private static final Map<String, AttackExecutor> executors = new ConcurrentHashMap<>();
 
-    public abstract AttackProperties getAttackProperties();
-
     public String name() {
         return getAttackProperties().getName();
     }
-
-    public abstract void attack();
 
     public synchronized String setupAttack() {
         final var that = this;

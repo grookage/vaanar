@@ -24,6 +24,14 @@ import com.grookage.vaanar.core.attack.cpu.CPUAttackProperties;
 import com.grookage.vaanar.core.attack.cpu.CPUAttacker;
 import com.grookage.vaanar.core.attack.custom.CustomAttackProperties;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
+import com.grookage.vaanar.core.attack.exception.ExceptionAttackProperties;
+import com.grookage.vaanar.core.attack.exception.ExceptionAttacker;
+import com.grookage.vaanar.core.attack.latency.LatencyAttackProperties;
+import com.grookage.vaanar.core.attack.latency.LatencyAttacker;
+import com.grookage.vaanar.core.attack.memory.MemoryAttackProperties;
+import com.grookage.vaanar.core.attack.memory.MemoryAttacker;
+import com.grookage.vaanar.core.attack.sigterm.SigtermAttackProperties;
+import com.grookage.vaanar.core.attack.sigterm.SigtermAttacker;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -62,6 +70,26 @@ public class AttackRegistryUtils {
                         properties.getName(),
                         properties
                 ));
+            }
+
+            @Override
+            public Optional<Attacker> accept(ExceptionAttackProperties properties) {
+                return Optional.of(new ExceptionAttacker(properties));
+            }
+
+            @Override
+            public Optional<Attacker> accept(LatencyAttackProperties properties) {
+                return Optional.of(new LatencyAttacker(properties));
+            }
+
+            @Override
+            public Optional<Attacker> accept(MemoryAttackProperties properties) {
+                return Optional.of(new MemoryAttacker(properties));
+            }
+
+            @Override
+            public Optional<Attacker> accept(SigtermAttackProperties properties) {
+                return Optional.of(new SigtermAttacker(properties));
             }
         });
     }

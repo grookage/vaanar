@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.grookage.vaanar.core.attack.cpu.CPUAttackProperties;
 import com.grookage.vaanar.core.attack.custom.CustomAttackProperties;
+import com.grookage.vaanar.core.attack.exception.ExceptionAttackProperties;
+import com.grookage.vaanar.core.attack.latency.LatencyAttackProperties;
+import com.grookage.vaanar.core.attack.memory.MemoryAttackProperties;
+import com.grookage.vaanar.core.attack.sigterm.SigtermAttackProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,7 +38,11 @@ import javax.validation.constraints.NotNull;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CPUAttackProperties.class, name = "CPU"),
-        @JsonSubTypes.Type(value = CustomAttackProperties.class, name = "CUSTOM")
+        @JsonSubTypes.Type(value = CustomAttackProperties.class, name = "CUSTOM"),
+        @JsonSubTypes.Type(value = ExceptionAttackProperties.class, name = "EXCEPTION"),
+        @JsonSubTypes.Type(value = MemoryAttackProperties.class, name = "MEMORY"),
+        @JsonSubTypes.Type(value = LatencyAttackProperties.class, name = "LATENCY"),
+        @JsonSubTypes.Type(value = SigtermAttackProperties.class, name = "SIGTERM")
 })
 public abstract class AttackProperties {
     @NotNull

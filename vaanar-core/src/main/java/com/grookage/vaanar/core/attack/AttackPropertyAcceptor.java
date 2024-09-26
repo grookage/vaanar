@@ -18,6 +18,10 @@ package com.grookage.vaanar.core.attack;
 
 import com.grookage.vaanar.core.attack.cpu.CPUAttackProperties;
 import com.grookage.vaanar.core.attack.custom.CustomAttackProperties;
+import com.grookage.vaanar.core.attack.exception.ExceptionAttackProperties;
+import com.grookage.vaanar.core.attack.latency.LatencyAttackProperties;
+import com.grookage.vaanar.core.attack.memory.MemoryAttackProperties;
+import com.grookage.vaanar.core.attack.sigterm.SigtermAttackProperties;
 
 public interface AttackPropertyAcceptor<T> {
 
@@ -25,4 +29,11 @@ public interface AttackPropertyAcceptor<T> {
 
     T accept(CustomAttackProperties properties);
 
+    T accept(ExceptionAttackProperties properties);
+
+    T accept(LatencyAttackProperties properties);
+
+    T accept(MemoryAttackProperties properties);
+
+    T accept(SigtermAttackProperties properties);
 }
