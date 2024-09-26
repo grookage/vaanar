@@ -1,10 +1,14 @@
 # Vaanar
 
-Vaanar is a chaos monkey application for dropwizard. Inspired by [Chaos Engineering @ Netflix](https://github.com/Netflix/chaosmonkey) and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot). It borrows the CPU and Memory attacks from [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot), with simplified interfaces and easy to plugin systems
+Vaanar is a chaos monkey application for dropwizard. Inspired
+by [Chaos Engineering @ Netflix](https://github.com/Netflix/chaosmonkey)
+and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot). It borrows the CPU and
+Memory attacks from [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot), with
+simplified interfaces and easy to plugin systems
 
 <p> Vaanar provides the following chaos attacks </p>
 
-- CPU Attack 
+- CPU Attack
 - Memory Attack
 - Latency Attack
 - Exception Attack
@@ -13,7 +17,7 @@ Vaanar is a chaos monkey application for dropwizard. Inspired by [Chaos Engineer
 
 ### Getting Started
 
-#### Define your AttackConfiguration to begin with 
+#### Define your AttackConfiguration to begin with
 
 ```
 {
@@ -24,6 +28,7 @@ Vaanar is a chaos monkey application for dropwizard. Inspired by [Chaos Engineer
     ....
   }]
 ```
+
 #### Initialize the VaanarBundle
 
 ```
@@ -40,58 +45,6 @@ class TestBundle<T extends Configuration> extends VaanarBundle<T> {
 }
 ```
 
-### Build plugin
-This library uses an aspect to introspect and instrument your code during compile time to inject metrics collection code.
-Therefore, configuration needs to be put into your pom file in the `build/plugins` section to enabje aspectj weaving.
-
-```
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>aspectj-maven-plugin</artifactId>
-                    <version>1.14.0</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.aspectj</groupId>
-                            <artifactId>aspectjrt</artifactId>
-                            <version>1.9.8</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.aspectj</groupId>
-                            <artifactId>aspectjtools</artifactId>
-                            <version>1.9.8</version>
-                        </dependency>
-                    </dependencies>
-
-                    <configuration>
-                        <complianceLevel>17</complianceLevel>
-                        <source>17</source>
-                        <target>17</target>
-                        <showWeaveInfo>true</showWeaveInfo>
-                        <forceAjcCompile>true</forceAjcCompile>
-                        <sources/>
-                        <weaveDirectories>
-                            <weaveDirectory>${project.build.directory}/classes</weaveDirectory>
-                        </weaveDirectories>
-                        <verbose>true</verbose>
-                        <Xlint>ignore</Xlint>
-                        <aspectLibraries>
-                            <aspectLibrary>
-                                <groupId>com.grookage.vaanar</groupId>
-                                <artifactId>vaanar-core</artifactId>
-                            </aspectLibrary>
-                        </aspectLibraries>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>process-classes</phase>
-                            <goals>
-                                <goal>compile</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-```
-
 ### Maven Dependency
 
 - The bom is available at
@@ -104,29 +57,16 @@ Therefore, configuration needs to be put into your pom file in the `build/plugin
 </dependency>
 ```
 
-If you don't have aspectjrt
-
-```
-        <dependency>
-            <groupId>com.grookage.vaanar</groupId>
-            <artifactId>vaanar-dropwizard</artifactId>
-            <version>0.0.1-RC1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.9.8</version>
-        </dependency>
-```
-
 #### Preparing a function for attack
 
-There are two kinds of attacks. 
+There are two kinds of attacks.
 
 - Attacks that can start when the application starts - not interpretable by nature
-- Interpretable attacks - For this, Annotate the method with `@AttackFunction` with the appropriate attackName specified in the config
+- Interpretable attacks - For this, Annotate the method with `@AttackFunction` with the appropriate attackName specified
+  in the config
 
 For example:
+
 ```
     @AttackFunction(name = "testAttack")
     private void attackableFunction(String args..) {

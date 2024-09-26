@@ -66,8 +66,7 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
         final var attackProperties = null == attackConfiguration ? new ArrayList<AttackProperties>() :
                 attackConfiguration.getAttackProperties();
         final var additionalAttackers = getAdditionalAttackers(configuration, environment).orElse(null);
-        AttackRegistryUtils.initialize(attackProperties, additionalAttackers);
-        final var attackRegistry = AttackRegistryUtils.getAttackRegistry();
+        final var attackRegistry = AttackRegistryUtils.getRegistry(attackProperties, additionalAttackers);
         environment.lifecycle().manage(new Managed() {
             @Override
             public void start() {

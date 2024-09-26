@@ -32,7 +32,6 @@ import com.grookage.vaanar.core.attack.memory.MemoryAttackProperties;
 import com.grookage.vaanar.core.attack.memory.MemoryAttacker;
 import com.grookage.vaanar.core.attack.sigterm.SigtermAttackProperties;
 import com.grookage.vaanar.core.attack.sigterm.SigtermAttacker;
-import lombok.Getter;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -41,19 +40,18 @@ import java.util.Optional;
 @UtilityClass
 public class AttackRegistryUtils {
 
-    @Getter
-    private static AttackRegistry attackRegistry = new AttackRegistry();
-
-    public static void initialize(
+    public static AttackRegistry getRegistry(
             final List<AttackProperties> attackProperties,
             final CustomAttackerFactory additionalAttackers
     ) {
+        final var attackRegistry = new AttackRegistry();
         if (null != attackProperties) {
             attackProperties.forEach(attackProperty -> {
                 final var probableAttacker = getAttacker(attackProperty, additionalAttackers);
                 probableAttacker.ifPresent(attacker -> attackRegistry.addAttacker(attackProperty.getName(), attacker));
             });
         }
+        return attackRegistry;
     }
 
     public static Optional<Attacker> getAttacker(
