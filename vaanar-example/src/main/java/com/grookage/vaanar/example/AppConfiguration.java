@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
-package com.grookage.vaanar.dw.lifecycle;
+package com.grookage.vaanar.example;
 
-public interface VaanarLifecycle {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.grookage.vaanar.core.registry.AttackConfiguration;
+import io.dropwizard.Configuration;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-    void start();
+import javax.validation.constraints.NotNull;
 
-    void stop();
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfiguration extends Configuration {
+
+    @NotNull
+    private AttackConfiguration attackConfiguration;
 
 }

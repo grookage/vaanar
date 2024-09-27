@@ -33,8 +33,8 @@ import java.util.stream.IntStream;
 @Data
 public class MemoryAttacker extends AbstractAttacker {
 
-    private final MemoryAttackProperties attackProperties;
     private static final AtomicLong stolenMemory = new AtomicLong(0);
+    private final MemoryAttackProperties attackProperties;
 
     public MemoryAttacker(MemoryAttackProperties attackProperties) {
         this.attackProperties = attackProperties;

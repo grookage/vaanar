@@ -50,7 +50,7 @@ public abstract class AttackProperties {
     private String name;
     private boolean enabled = false;
     private boolean repeatable = false;
-    private boolean interpretable = false;
+    private boolean interceptable = false;
     private long initialDelayMs = 0L;
     private long executeAfterDelayMs = 0L;
     private long executeUntilTimeMs = 30000L;

@@ -33,11 +33,11 @@ public class SigtermAttackProperties extends AttackProperties {
     public SigtermAttackProperties(final String name,
                                    final boolean enabled,
                                    final boolean repeatable,
-                                   final boolean interpretable,
+                                   final boolean interceptable,
                                    long initialDelayMs,
                                    long executeAfterDelayMs,
                                    long executeUntilDelayMs) {
-        super(AttackType.SIGTERM, name, enabled, repeatable, interpretable,
+        super(AttackType.SIGTERM, name, enabled, repeatable, interceptable,
                 initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
     }
 
