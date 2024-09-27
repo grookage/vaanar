@@ -51,9 +51,4 @@ public class AttackRegistry {
         return registry.values();
     }
 
-    public boolean interpretableAttack(final String attackName) {
-        return getAttacker(attackName)
-                .map(value -> value.getAttackProperties().isInterpretable()).orElse(false);
-    }
-
 }

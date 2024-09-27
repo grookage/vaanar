@@ -15,6 +15,18 @@ simplified interfaces and easy to plugin systems
 - Sigterm Attack
 - Custom Attack - Define your own attack by implementing `CustomAttackerFactory`
 
+### Maven Dependency
+
+- The bom is available at
+
+```
+<dependency>
+    <groupId>com.grookage.vaanar</groupId>
+    <artifactId>vaanar-bom</artifactId>
+    <versio>0.0.1-RC1</version>
+</dependency>
+```
+
 ### Getting Started
 
 #### Define your AttackConfiguration to begin with
@@ -31,39 +43,55 @@ simplified interfaces and easy to plugin systems
 
 #### Initialize the VaanarBundle
 
-```
-class TestBundle<T extends Configuration> extends VaanarBundle<T> {
-    @Override
-    protected AttackConfiguration getAttackConfiguration(T configuration) {
-        return configuration.getAttackConfiguration();
-    }
+VaanarBundle works in conjunction with guiceBundle, at the moment. So you'll need to create both bundles
+and wire them together for AttackFunctionInterceptor to work.
 
-    @Override
-    protected Optional<CustomAttackerFactory> getAdditionalAttackers(T configuration, Environment environment) {
-        return Optional.empty();
-    }
-}
-```
-
-### Maven Dependency
-
-- The bom is available at
+##### Creating the VaanarBundle, in your dropwizard initialize method
 
 ```
-<dependency>
-    <groupId>com.grookage.vaanar</groupId>
-    <artifactId>vaanar-bom</artifactId>
-    <versio>0.0.1-RC1</version>
-</dependency>
+final var vaanarBundle = new VaanarBundle<AppConfiguration>() {
+            @Override
+            protected AttackConfiguration getAttackConfiguration(AppConfiguration configuration) {
+                return configuration.getAttackConfiguration();
+            }
+
+            @Override
+            protected Optional<CustomAttackerFactory> getAdditionalAttackers(AppConfiguration configuration, Environment environment) {
+                return Optional.empty();
+            }
+        };
+        bootstrap.addBundle(vaanarBundle);
 ```
+
+##### Next, create the guiceBundle with autoConfigEnabled. This requires you to bind the AttackInterceptor
+
+```
+ final var guiceBundle = GuiceBundle.builder()
+                .enableAutoConfig(getClass().getPackage()
+                        .getName())
+                .modules(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bindInterceptor(Matchers.any(), Matchers.annotatedWith(AttackFunction.class), vaanarBundle.getAttackInterceptor());
+                    }
+
+                    @Provides
+                    public VaanarEngine getVaanarEngine() {
+                        return vaanarBundle.getVaanarEngine();
+                    }
+                })
+                .build(Stage.PRODUCTION);
+        bootstrap.addBundle(guiceBundle);
+```
+This will be further simplified in the future and many custom attacks shall be added. 
 
 #### Preparing a function for attack
 
 There are two kinds of attacks.
 
-- Attacks that can start when the application starts - not interpretable by nature
-- Interpretable attacks - For this, Annotate the method with `@AttackFunction` with the appropriate attackName specified
-  in the config
+- Attacks that can start when the application starts - not interceptable by nature. These when marked as enabled, in the configuration start as soon as the app starts
+- Interceptable attacks - For this, Annotate the method with `@AttackFunction` with the appropriate attackName specified
+  in the config. These are custom attacks, that can be leveraged by the clients as well. 
 
 For example:
 
@@ -73,6 +101,10 @@ For example:
         //Some body
     }
 ```
+
+#### You can find the dropwizard server example in vaanar-example, with a latencyMonkey configured
+
+Please use github issues for features and asks. 
 
 LICENSE
 -------

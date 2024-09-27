@@ -1,0 +1,23 @@
+server:
+  maxThreads: 128
+  minThreads: 128
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
+  applicationContextPath: /
+  requestLog:
+    appenders:
+      - type: console
+        timeZone: IST
+
+attackConfiguration:
+  enableDestruction: true
+  attackProperties:
+    - type: LATENCY
+      name: latencyMonkey
+      enabled: true
+      interceptable: true
+      latencyDurationMs: 500

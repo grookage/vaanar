@@ -35,12 +35,12 @@ public class LatencyAttackProperties extends AttackProperties {
     public LatencyAttackProperties(final String name,
                                    final boolean enabled,
                                    final boolean repeatable,
-                                   final boolean interpretable,
+                                   final boolean interceptable,
                                    long initialDelayMs,
                                    long executeAfterDelayMs,
                                    long executeUntilDelayMs,
                                    long latencyDurationMs) {
-        super(AttackType.LATENCY, name, enabled, repeatable, interpretable,
+        super(AttackType.LATENCY, name, enabled, repeatable, interceptable,
                 initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
         this.latencyDurationMs = latencyDurationMs;
     }

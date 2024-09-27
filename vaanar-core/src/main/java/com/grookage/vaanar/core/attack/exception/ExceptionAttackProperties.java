@@ -33,11 +33,11 @@ public class ExceptionAttackProperties extends AttackProperties {
     public ExceptionAttackProperties(final String name,
                                      final boolean enabled,
                                      final boolean repeatable,
-                                     final boolean interpretable,
+                                     final boolean interceptable,
                                      long initialDelayMs,
                                      long executeAfterDelayMs,
                                      long executeUntilDelayMs) {
-        super(AttackType.EXCEPTION, name, enabled, repeatable, interpretable,
+        super(AttackType.EXCEPTION, name, enabled, repeatable, interceptable,
                 initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
     }
 

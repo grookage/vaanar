@@ -37,7 +37,7 @@ public class CPUAttackProperties extends AttackProperties {
     public CPUAttackProperties(String name,
                                boolean enabled,
                                boolean repeatable,
-                               boolean interpretable,
+                               boolean interceptable,
                                long initialDelayMs,
                                long executeAfterDelayMs,
                                long executeUntilDelayMs,
@@ -45,7 +45,7 @@ public class CPUAttackProperties extends AttackProperties {
                                double targetLoad,
                                double leeway,
                                long threadSleepDurationMs) {
-        super(AttackType.CPU, name, enabled, repeatable, interpretable,
+        super(AttackType.CPU, name, enabled, repeatable, interceptable,
                 initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
         this.holdLoadMs = holdLoadMs;
         this.targetLoad = targetLoad;

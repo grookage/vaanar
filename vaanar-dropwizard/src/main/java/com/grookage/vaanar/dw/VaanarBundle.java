@@ -16,31 +16,29 @@
 
 package com.grookage.vaanar.dw;
 
-import com.grookage.vaanar.core.attack.AttackProperties;
-import com.grookage.vaanar.core.attack.Attacker;
+import com.grookage.vaanar.core.VaanarEngine;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
 import com.grookage.vaanar.core.registry.AttackConfiguration;
-import com.grookage.vaanar.core.registry.AttackRegistryUtils;
-import com.grookage.vaanar.dw.health.VaanarHealthCheck;
-import com.grookage.vaanar.dw.lifecycle.VaanarLifecycle;
+import com.grookage.vaanar.dw.interceptors.AttackFunctionInterceptor;
 import com.grookage.vaanar.dw.resources.VaanarResource;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
-import io.dropwizard.lifecycle.Managed;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-@Data
+@NoArgsConstructor
 @Getter
 @Slf4j
 public abstract class VaanarBundle<T extends Configuration> implements ConfiguredBundle<T> {
+
+    private VaanarEngine vaanarEngine;
+    private AttackFunctionInterceptor attackInterceptor;
 
     protected abstract AttackConfiguration getAttackConfiguration(T configuration);
 
@@ -48,56 +46,24 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
             T configuration, Environment environment
     );
 
-    protected List<VaanarHealthCheck> withHealthChecks(T configuration) {
-        return List.of();
-    }
-
-    protected List<VaanarLifecycle> withLifecycleManagers(T configuration) {
-        return List.of();
-    }
-
     @Override
     public void run(T configuration, Environment environment) {
         final var attackConfiguration = getAttackConfiguration(configuration);
         if (null == attackConfiguration || !attackConfiguration.isEnableDestruction()) {
             log.info("No destruction configured. Exiting gracefully, nothing to do here");
+            return;
         }
 
-        final var attackProperties = null == attackConfiguration ? new ArrayList<AttackProperties>() :
-                attackConfiguration.getAttackProperties();
-        final var additionalAttackers = getAdditionalAttackers(configuration, environment).orElse(null);
-        final var attackRegistry = AttackRegistryUtils.getRegistry(attackProperties, additionalAttackers);
-        environment.lifecycle().manage(new Managed() {
-            @Override
-            public void start() {
-                log.info("Starting Monkey Business");
-                attackRegistry.attackers()
-                        .stream()
-                        .filter(each -> !each.getAttackProperties().isInterpretable())
-                        .forEach(Attacker::setupAttack);
-                log.info("Started Monkey Business");
-            }
+        this.vaanarEngine = new VaanarEngine(attackConfiguration,
+                getAdditionalAttackers(configuration, environment).orElse(null));
+        this.attackInterceptor = new AttackFunctionInterceptor(
+                () -> vaanarEngine.getAttackRegistry()
+        );
+        environment.jersey().register(new VaanarResource(vaanarEngine));
+    }
 
-            @Override
-            public void stop() {
-                log.info("Stopped Monkey Business");
-            }
-        });
-        withLifecycleManagers(configuration)
-                .forEach(lifecycle -> environment.lifecycle().manage(new Managed() {
-                    @Override
-                    public void start() {
-                        lifecycle.start();
-                    }
-
-                    @Override
-                    public void stop() {
-                        lifecycle.stop();
-                    }
-                }));
-        withHealthChecks(configuration)
-                .forEach(healthCheck -> environment.healthChecks().register(healthCheck.getName(), healthCheck));
-        environment.jersey().register(new VaanarResource(attackRegistry, additionalAttackers));
+    @Override
+    public void initialize(Bootstrap<?> bootstrap) {
     }
 }
 

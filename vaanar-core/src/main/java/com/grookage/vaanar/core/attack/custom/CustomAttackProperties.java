@@ -33,11 +33,11 @@ public class CustomAttackProperties extends AttackProperties {
     public CustomAttackProperties(final String name,
                                   final boolean enabled,
                                   final boolean repeatable,
-                                  final boolean interpretable,
+                                  final boolean interceptable,
                                   long initialDelayMs,
                                   long executeAfterDelayMs,
                                   long executeUntilDelayMs) {
-        super(AttackType.CUSTOM, name, enabled, repeatable, interpretable,
+        super(AttackType.CUSTOM, name, enabled, repeatable, interceptable,
                 initialDelayMs, executeAfterDelayMs, executeUntilDelayMs);
     }
 

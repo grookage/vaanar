@@ -18,9 +18,8 @@ package com.grookage.vaanar.dw.resources;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
+import com.grookage.vaanar.core.VaanarEngine;
 import com.grookage.vaanar.core.attack.AttackProperties;
-import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
-import com.grookage.vaanar.core.registry.AttackRegistry;
 import com.grookage.vaanar.core.registry.AttackRegistryUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,24 +43,23 @@ import java.util.List;
 @AllArgsConstructor
 public class VaanarResource {
 
-    private final AttackRegistry attackRegistry;
-    private final CustomAttackerFactory attackerFactory;
+    private final VaanarEngine vaanarEngine;
 
     @GET
     @Timed
     @ExceptionMetered
     @Path("/details")
-    private List<AttackProperties> getAttackProperties() {
-        return attackRegistry.getAttackProperties();
+    public List<AttackProperties> getAttackProperties() {
+        return vaanarEngine.getAttackRegistry().getAttackProperties();
     }
 
     @POST
     @Timed
     @ExceptionMetered
     @Path("/add")
-    private Response addAttacker(AttackProperties attackProperty) {
-        final var probableAttacker = AttackRegistryUtils.getAttacker(attackProperty, attackerFactory);
-        probableAttacker.ifPresent(attacker -> attackRegistry.addAttacker(
+    public Response addAttacker(AttackProperties attackProperty) {
+        final var probableAttacker = AttackRegistryUtils.getAttacker(attackProperty, vaanarEngine.getAttackerFactory());
+        probableAttacker.ifPresent(attacker -> vaanarEngine.getAttackRegistry().addAttacker(
                 attackProperty.getName(),
                 attacker
         ));
@@ -72,8 +70,8 @@ public class VaanarResource {
     @Timed
     @ExceptionMetered
     @Path("/{attackName}/attack")
-    private Response attack(@PathParam("attackName") @NotNull final String attackName) {
-        final var attacker = attackRegistry.getAttacker(attackName).orElse(null);
+    public Response attack(@PathParam("attackName") @NotNull final String attackName) {
+        final var attacker = vaanarEngine.getAttackRegistry().getAttacker(attackName).orElse(null);
         if (null == attacker) {
             return Response.status(400)
                     .entity("No Monkey Found for attack " + attackName + "Can't assault at this time.")
