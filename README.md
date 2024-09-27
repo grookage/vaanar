@@ -2,9 +2,7 @@
 
 Vaanar is a chaos monkey application for dropwizard. Inspired
 by [Chaos Engineering @ Netflix](https://github.com/Netflix/chaosmonkey)
-and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot). It borrows the CPU and
-Memory attacks from [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot), with
-simplified interfaces and easy to plugin systems
+and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot). 
 
 <p> Vaanar provides the following chaos attacks </p>
 
