@@ -39,13 +39,13 @@ public class CPUAttacker extends AbstractAttacker {
 
     @Override
     public void attack() {
-        final var processLoad = AttackUtils.getCPULoad();
+        final var processLoad = AttackUtils.getProcessCPULoad();
         if (processLoad < 0) {
             log.warn("No CPU Information Available. Exiting the attack for name {}", name());
             return;
         }
 
-        log.info("Vaanar : Starting the CPU Attack");
+        log.info("Vaanar : Starting the CPU Monkey");
         final var targetLoad = attackProperties.getTargetLoad();
         final var holdLoad = attackProperties.getHoldLoadMs();
         while (AttackUtils.getProcessCPULoad() < targetLoad) {
@@ -56,5 +56,6 @@ public class CPUAttacker extends AbstractAttacker {
             threadManager.tick();
         }
         threadManager.stop();
+        log.info("Vaanar : Stopped the CPU Monkey");
     }
 }

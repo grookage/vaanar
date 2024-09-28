@@ -26,10 +26,6 @@ public class AttackUtils {
     private static final OperatingSystemMXBean mxBean =
             (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-    public static double getCPULoad() {
-        return mxBean.getCpuLoad();
-    }
-
     public static double getProcessCPULoad() {
         return mxBean.getProcessCpuLoad();
     }

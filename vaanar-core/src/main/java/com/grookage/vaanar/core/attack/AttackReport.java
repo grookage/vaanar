@@ -16,20 +16,18 @@
 
 package com.grookage.vaanar.core.attack;
 
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/*
-DO NOT implement attacker directly. Please extend AbstractAttacker instead
- */
-public interface Attacker {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AttackReport {
 
-    AttackProperties getAttackProperties();
-
-    String name();
-
-    void attack();
-
-    void setupAttack();
-
-    Map<String, AttackExecutor> getExecutors();
+    private boolean attacked;
 }

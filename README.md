@@ -2,7 +2,7 @@
 
 Vaanar is a chaos monkey application for dropwizard. Inspired
 by [Chaos Engineering @ Netflix](https://github.com/Netflix/chaosmonkey)
-and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot). 
+and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-spring-boot).
 
 <p> Vaanar provides the following chaos attacks </p>
 
@@ -21,7 +21,7 @@ and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-s
 <dependency>
     <groupId>com.grookage.vaanar</groupId>
     <artifactId>vaanar-bom</artifactId>
-    <versio>0.0.1-RC1</version>
+    <versio>0.0.1-RC2</version>
 </dependency>
 ```
 
@@ -81,15 +81,17 @@ final var vaanarBundle = new VaanarBundle<AppConfiguration>() {
                 .build(Stage.PRODUCTION);
         bootstrap.addBundle(guiceBundle);
 ```
-This will be further simplified in the future and many custom attacks shall be added. 
+
+This will be further simplified in the future and many custom attacks shall be added.
 
 #### Preparing a function for attack
 
 There are two kinds of attacks.
 
-- Attacks that can start when the application starts - not interceptable by nature. These when marked as enabled, in the configuration start as soon as the app starts
+- Attacks that can start when the application starts - not interceptable by nature. These when marked as enabled, in the
+  configuration start as soon as the app starts
 - Interceptable attacks - For this, Annotate the method with `@AttackFunction` with the appropriate attackName specified
-  in the config. These are custom attacks, that can be leveraged by the clients as well. 
+  in the config. These are custom attacks, that can be leveraged by the clients as well.
 
 For example:
 
@@ -102,7 +104,7 @@ For example:
 
 #### You can find the dropwizard server example in vaanar-example, with a latencyMonkey configured
 
-Please use github issues for features and asks. 
+Please use github issues for features and asks.
 
 LICENSE
 -------

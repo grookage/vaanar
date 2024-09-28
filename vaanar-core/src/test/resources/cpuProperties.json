@@ -1,0 +1,6 @@
+{
+  "name": "cpuMonkey",
+  "type": "CPU",
+  "holdLoadMs": 30000,
+  "enabled": true
+}

@@ -18,6 +18,7 @@ package com.grookage.vaanar.core.attack;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Executors;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @Slf4j
+@Getter
 public class AttackExecutor {
 
     private final ScheduledExecutorService executorService;

@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "type": "SIGTERM",
+  "name": "sigtermMonkey"
+}

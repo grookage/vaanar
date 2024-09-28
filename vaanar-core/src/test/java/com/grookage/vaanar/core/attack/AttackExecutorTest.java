@@ -16,20 +16,18 @@
 
 package com.grookage.vaanar.core.attack;
 
-import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-/*
-DO NOT implement attacker directly. Please extend AbstractAttacker instead
- */
-public interface Attacker {
+class AttackExecutorTest {
 
-    AttackProperties getAttackProperties();
-
-    String name();
-
-    void attack();
-
-    void setupAttack();
-
-    Map<String, AttackExecutor> getExecutors();
+    @Test
+    void testAttackExecutor() {
+        final var attacker = new AbstractAttackerTest.TestableAttacker();
+        final var executor = new AttackExecutor(() -> attacker);
+        Assertions.assertNotNull(executor);
+        executor.start();
+        Assertions.assertNull(executor.getExecutorFuture());
+        Assertions.assertTrue(attacker.getAttacked().get());
+    }
 }

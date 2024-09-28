@@ -34,18 +34,19 @@ import com.grookage.vaanar.core.attack.sigterm.SigtermAttackProperties;
 import com.grookage.vaanar.core.attack.sigterm.SigtermAttacker;
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
 import java.util.Optional;
 
 @UtilityClass
 public class AttackRegistryUtils {
 
     public static AttackRegistry getRegistry(
-            final List<AttackProperties> attackProperties,
+            final AttackConfiguration attackConfiguration,
             final CustomAttackerFactory additionalAttackers
     ) {
         final var attackRegistry = new AttackRegistry();
-        if (null != attackProperties) {
+        final var attackProperties = attackConfiguration.getAttackProperties();
+        if (attackConfiguration.isEnableDestruction() &&
+                null != attackProperties) {
             attackProperties.forEach(attackProperty -> {
                 final var probableAttacker = getAttacker(attackProperty, additionalAttackers);
                 probableAttacker.ifPresent(attacker -> attackRegistry.addAttacker(attackProperty.getName(), attacker));

@@ -1,0 +1,21 @@
+{
+  "enableDestruction": true,
+  "attackProperties": [
+    {
+      "type": "CPU",
+      "name": "CPUAttack"
+    },
+    {
+      "type": "LATENCY",
+      "name": "latencyAttack"
+    },
+    {
+      "type": "MEMORY",
+      "name": "memoryAttack"
+    },
+    {
+      "type": "CUSTOM",
+      "name": "customAttack"
+    }
+  ]
+}

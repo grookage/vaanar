@@ -1,0 +1,6 @@
+{
+  "enabled": "true",
+  "type": "MEMORY",
+  "name": "memoryMonkey",
+  "holdTimeMs": 30000
+}

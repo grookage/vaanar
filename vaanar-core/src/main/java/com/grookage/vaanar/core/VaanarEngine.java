@@ -36,8 +36,7 @@ public class VaanarEngine {
                         CustomAttackerFactory attackerFactory) {
         this.attackConfiguration = attackConfiguration;
         this.attackerFactory = attackerFactory;
-        this.attackRegistry = AttackRegistryUtils
-                .getRegistry(attackConfiguration.getAttackProperties(), attackerFactory);
+        this.attackRegistry = AttackRegistryUtils.getRegistry(attackConfiguration, attackerFactory);
         this.start();
     }
 
