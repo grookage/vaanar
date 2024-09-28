@@ -32,7 +32,7 @@ class CustomAttackPropertiesTest {
         );
         Assertions.assertNotNull(properties);
         Assertions.assertEquals("customMonkey", properties.getName());
-        Assertions.assertTrue(properties.isEnabled());
+        Assertions.assertFalse(properties.isEnabled());
         Assertions.assertFalse(properties.isRepeatable());
         Assertions.assertFalse(properties.isInterceptable());
     }

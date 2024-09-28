@@ -27,7 +27,7 @@ class ExceptionAttackPropertiesTest {
     @Test
     void testExceptionProperties() {
         final var properties = ResourceHelper.getResource(
-                "customProperties.json",
+                "exceptionProperties.json",
                 ExceptionAttackProperties.class
         );
         Assertions.assertNotNull(properties);
