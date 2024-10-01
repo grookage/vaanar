@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.grookage.vaanar.core.attack.cpu.CPUAttackProperties;
+import com.grookage.vaanar.core.attack.criteria.AttackCriteria;
 import com.grookage.vaanar.core.attack.custom.CustomAttackProperties;
 import com.grookage.vaanar.core.attack.exception.ExceptionAttackProperties;
 import com.grookage.vaanar.core.attack.latency.LatencyAttackProperties;
@@ -54,6 +55,8 @@ public abstract class AttackProperties {
     private long initialDelayMs = 0L;
     private long executeAfterDelayMs = 0L;
     private long executeUntilTimeMs = 30000L;
+    private AttackCriteria criteria = new AttackCriteria();
 
     public abstract <T> T accept(AttackPropertyAcceptor<T> acceptor);
+
 }

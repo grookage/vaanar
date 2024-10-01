@@ -17,6 +17,7 @@
 package com.grookage.vaanar.dw;
 
 import com.grookage.vaanar.core.VaanarEngine;
+import com.grookage.vaanar.core.attack.criteria.AttackPredicate;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
 import com.grookage.vaanar.core.registry.AttackConfiguration;
 import com.grookage.vaanar.dw.interceptors.AttackFunctionInterceptor;
@@ -57,7 +58,8 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
         this.vaanarEngine = new VaanarEngine(attackConfiguration,
                 getAdditionalAttackers(configuration, environment).orElse(null));
         this.attackInterceptor = new AttackFunctionInterceptor(
-                () -> vaanarEngine.getAttackRegistry()
+                () -> vaanarEngine.getAttackRegistry(),
+                new AttackPredicate()
         );
         environment.jersey().register(new VaanarResource(vaanarEngine));
     }

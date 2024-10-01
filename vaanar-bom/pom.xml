@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.grookage.vaanar</groupId>
         <artifactId>vaanar</artifactId>
-        <version>0.0.1-RC2</version>
+        <version>0.0.1-RC3</version>
     </parent>
 
     <artifactId>vaanar-bom</artifactId>

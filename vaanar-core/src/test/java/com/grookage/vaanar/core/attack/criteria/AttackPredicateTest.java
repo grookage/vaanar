@@ -14,28 +14,33 @@
  * limitations under the License.
  */
 
-package com.grookage.vaanar.core.attack.cpu;
+package com.grookage.vaanar.core.attack.criteria;
 
 import com.grookage.vaanar.core.ResourceHelper;
+import com.grookage.vaanar.core.attack.cpu.CPUAttackProperties;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class CPUAttackPropertiesTest {
+class AttackPredicateTest {
 
     @Test
     @SneakyThrows
-    void testCPUAttackProperties() {
+    void testAttackPredicate() {
         var properties = ResourceHelper.getResource(
                 "cpuProperties.json",
                 CPUAttackProperties.class
         );
-        Assertions.assertNotNull(properties);
-        Assertions.assertTrue(properties.isEnabled());
-        Assertions.assertFalse(properties.isRepeatable());
-        Assertions.assertFalse(properties.isInterceptable());
-        Assertions.assertEquals(30000, properties.getHoldLoadMs());
-        Assertions.assertEquals(0.9, properties.getTargetLoad());
-        Assertions.assertEquals("cpuMonkey", properties.getName());
+        final var predicate = new AttackPredicate();
+        Assertions.assertTrue(predicate.test(properties));
+        properties.setInterceptable(true);
+        Assertions.assertTrue(predicate.test(properties));
+        properties = ResourceHelper.getResource(
+                "customcpuProperties.json",
+                CPUAttackProperties.class
+        );
+        Assertions.assertFalse(predicate.test(properties));
+        properties.setInterceptable(true);
+        Assertions.assertFalse(predicate.test(properties));
     }
 }

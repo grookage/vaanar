@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package com.grookage.vaanar.core.attack;
+package com.grookage.vaanar.core.attack.criteria;
 
-import com.sun.management.OperatingSystemMXBean;
-import lombok.experimental.UtilityClass;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.lang.management.ManagementFactory;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AttackCriteria {
 
-@UtilityClass
-public class AttackUtils {
-    private static final OperatingSystemMXBean mxBean =
-            (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-
-    public static double getProcessCPULoad() {
-        return mxBean.getProcessCpuLoad();
-    }
+    private long startAt = System.currentTimeMillis();
+    private long endAt = Long.MAX_VALUE;
+    private double minAttackPercentage = 0;
+    private double maxAttackPercentage = 100;
 
 }

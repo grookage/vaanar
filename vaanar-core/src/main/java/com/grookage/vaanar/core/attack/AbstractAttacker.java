@@ -16,6 +16,7 @@
 
 package com.grookage.vaanar.core.attack;
 
+import com.grookage.vaanar.core.attack.criteria.AttackPredicate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractAttacker implements Attacker {
 
     private static final Map<String, AttackExecutor> executors = new ConcurrentHashMap<>();
+    private static final AttackPredicate ELIGIBILITY = new AttackPredicate();
 
     public String name() {
         return getAttackProperties().getName();
@@ -38,10 +40,7 @@ public abstract class AbstractAttacker implements Attacker {
 
     public synchronized void setupAttack() {
         final var attackProperties = getAttackProperties();
-        if (!attackProperties.isEnabled()) {
-            log.info("Monkey is not setup with properties {}. No monkey business", attackProperties);
-            return;
-        }
+        if (!ELIGIBILITY.test(attackProperties)) return;
         final var that = this;
         final var executor = new AttackExecutor(() -> that);
         executor.start();

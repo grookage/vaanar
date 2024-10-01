@@ -22,7 +22,7 @@
     <parent>
         <groupId>com.grookage.vaanar</groupId>
         <artifactId>vaanar-parent</artifactId>
-        <version>0.0.1-RC2</version>
+        <version>0.0.1-RC3</version>
         <relativePath>../vaanar-parent</relativePath>
     </parent>
 

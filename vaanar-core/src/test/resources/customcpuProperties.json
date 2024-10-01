@@ -1,0 +1,11 @@
+{
+  "name": "cpuMonkey",
+  "type": "CPU",
+  "holdLoadMs": 30000,
+  "enabled": true,
+  "interceptable": true,
+  "criteria": {
+    "minAttackPercentage": 0,
+    "maxAttackPercentage": 0
+  }
+}
