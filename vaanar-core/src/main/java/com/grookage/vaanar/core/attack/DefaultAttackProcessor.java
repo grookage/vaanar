@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultAttackProcessor implements AttackProcessor {
     private static final AttackPredicate ELIGIBILITY = new AttackPredicate();
-
     @Override
     public boolean eligible(AttackProperties properties) {
         return ELIGIBILITY.test(properties);

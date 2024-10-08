@@ -51,12 +51,8 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
             T configuration, Environment environment
     );
 
-    protected Optional<AttackProcessor> getAttackProcessor(T configuraiton) {
+    protected Optional<AttackProcessor> getAttackProcessor(T configuration) {
         return Optional.of(new DefaultAttackProcessor());
-    }
-
-    protected Predicate<AttackProperties> getAttackPredicate(T configuration) {
-        return new AttackPredicate();
     }
 
     @Override
@@ -73,8 +69,7 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
                 attackProcessor
         );
         this.attackInterceptor = new AttackFunctionInterceptor(
-                () -> vaanarEngine.getAttackRegistry(),
-                getAttackPredicate(configuration)
+                () -> vaanarEngine.getAttackRegistry()
         );
         environment.jersey().register(new VaanarResource(vaanarEngine, attackProcessor));
     }

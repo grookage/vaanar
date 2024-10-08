@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [0.0.1-RC5]
+
+- Vaanar Engine doesn't need a predicate, everything is part of the attackProcessor
+
 #### [0.0.1-RC4]
 
 - Introduced an AttackProcessor, which will be invoked with attackMetaData as you start an attack

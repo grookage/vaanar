@@ -35,15 +35,13 @@ import java.util.function.Supplier;
 public class AttackFunctionInterceptor implements MethodInterceptor {
 
     private final Supplier<AttackRegistry> registrySupplier;
-    private final Predicate<AttackProperties> criteria;
-
     @Override
     @SneakyThrows
     public Object invoke(MethodInvocation methodInvocation) {
         final var attackName = methodInvocation.getMethod().getAnnotation(AttackFunction.class);
         if (null != attackName) {
             final var attacker = registrySupplier.get().getAttacker(attackName.name()).orElse(null);
-            if (null != attacker && criteria.test(attacker.getAttackProperties())) {
+            if (null != attacker) {
                 attacker.setupAttack();
             }
         }

@@ -66,7 +66,7 @@ public class CPUThreadManager {
         try {
             Thread.sleep(threadSleepDurationMs);
         } catch (InterruptedException e) {
-            //...Do nothing here..//
+            Thread.currentThread().interrupt();
         }
     }
 
