@@ -38,11 +38,13 @@ public class AttackExecutor {
     private ScheduledFuture<?> executorFuture;
 
     @Builder
-    public AttackExecutor(Supplier<Attacker> attackSupplier) {
+    public AttackExecutor(String attackId,
+                          Supplier<Attacker> attackSupplier,
+                          AttackProcessor attackProcessor) {
         this.executorService = Executors.newSingleThreadScheduledExecutor();
         this.attackSupplier = attackSupplier;
         this.attackProperties = attackSupplier.get().getAttackProperties();
-        this.attackRunner = new AttackRunner();
+        this.attackRunner = new AttackRunner(attackId, attackProcessor);
     }
 
     public void start() {
@@ -62,13 +64,21 @@ public class AttackExecutor {
 
     @AllArgsConstructor
     public class AttackRunner implements Runnable {
+
+        private final String attackId;
+        private final AttackProcessor attackProcessor;
+
         @Override
         public void run() {
+            final var props = attackSupplier.get().getAttackProperties();
+            attackProcessor.beforeAttack(attackId, props);
             try {
                 attackSupplier.get().attack();
-                log.info("[AttackRunner.update] Successfully Completed Attack for properties {}..", attackProperties);
+                log.info("[AttackRunner.update] Successfully Completed Attack for properties {}..", props);
             } catch (Exception e) {
-                log.error("[AttackRunner.update] Error While executing attack or properties {}..", attackProperties);
+                log.error("[AttackRunner.update] Error While executing attack or properties {}..", props);
+            } finally {
+                attackProcessor.afterAttack(attackId, props);
             }
         }
     }

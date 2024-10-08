@@ -17,6 +17,9 @@
 package com.grookage.vaanar.dw;
 
 import com.grookage.vaanar.core.VaanarEngine;
+import com.grookage.vaanar.core.attack.AttackProcessor;
+import com.grookage.vaanar.core.attack.AttackProperties;
+import com.grookage.vaanar.core.attack.DefaultAttackProcessor;
 import com.grookage.vaanar.core.attack.criteria.AttackPredicate;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
 import com.grookage.vaanar.core.registry.AttackConfiguration;
@@ -31,6 +34,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 @NoArgsConstructor
@@ -47,6 +51,14 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
             T configuration, Environment environment
     );
 
+    protected Optional<AttackProcessor> getAttackProcessor(T configuraiton) {
+        return Optional.of(new DefaultAttackProcessor());
+    }
+
+    protected Predicate<AttackProperties> getAttackPredicate(T configuration) {
+        return new AttackPredicate();
+    }
+
     @Override
     public void run(T configuration, Environment environment) {
         final var attackConfiguration = getAttackConfiguration(configuration);
@@ -54,14 +66,17 @@ public abstract class VaanarBundle<T extends Configuration> implements Configure
             log.info("No destruction configured. Exiting gracefully, nothing to do here");
             return;
         }
-
-        this.vaanarEngine = new VaanarEngine(attackConfiguration,
-                getAdditionalAttackers(configuration, environment).orElse(null));
+        final var attackProcessor = getAttackProcessor(configuration).orElse(new DefaultAttackProcessor());
+        this.vaanarEngine = new VaanarEngine(
+                attackConfiguration,
+                getAdditionalAttackers(configuration, environment).orElse(null),
+                attackProcessor
+        );
         this.attackInterceptor = new AttackFunctionInterceptor(
                 () -> vaanarEngine.getAttackRegistry(),
-                new AttackPredicate()
+                getAttackPredicate(configuration)
         );
-        environment.jersey().register(new VaanarResource(vaanarEngine));
+        environment.jersey().register(new VaanarResource(vaanarEngine, attackProcessor));
     }
 
     @Override

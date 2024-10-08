@@ -19,6 +19,7 @@ package com.grookage.vaanar.dw.resources;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.grookage.vaanar.core.VaanarEngine;
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import com.grookage.vaanar.core.attack.AttackProperties;
 import com.grookage.vaanar.core.registry.AttackRegistryUtils;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ import java.util.List;
 public class VaanarResource {
 
     private final VaanarEngine vaanarEngine;
+    private final AttackProcessor attackProcessor;
 
     @GET
     @Timed
@@ -58,7 +60,10 @@ public class VaanarResource {
     @ExceptionMetered
     @Path("/add")
     public Response addAttacker(AttackProperties attackProperty) {
-        final var probableAttacker = AttackRegistryUtils.getAttacker(attackProperty, vaanarEngine.getAttackerFactory());
+        final var probableAttacker = AttackRegistryUtils.getAttacker(
+                attackProperty,
+                vaanarEngine.getAttackerFactory(),
+                attackProcessor);
         probableAttacker.ifPresent(attacker -> vaanarEngine.getAttackRegistry().addAttacker(
                 attackProperty.getName(),
                 attacker

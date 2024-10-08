@@ -18,6 +18,7 @@ package com.grookage.vaanar.core.registry;
 
 import com.grookage.vaanar.core.ResourceHelper;
 import com.grookage.vaanar.core.attack.Attacker;
+import com.grookage.vaanar.core.attack.DefaultAttackProcessor;
 import com.grookage.vaanar.core.attack.custom.CustomAttackProperties;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
 import com.grookage.vaanar.core.attack.exception.ExceptionAttackProperties;
@@ -38,7 +39,8 @@ class AttackRegistryUtilsTest {
                 AttackConfiguration.class
         );
         var registry = AttackRegistryUtils.getRegistry(
-                attackConfiguration, null
+                attackConfiguration, null,
+                new DefaultAttackProcessor()
         );
         Assertions.assertTrue(registry.attackers().isEmpty());
         attackConfiguration = ResourceHelper.getResource(
@@ -46,7 +48,8 @@ class AttackRegistryUtilsTest {
                 AttackConfiguration.class
         );
         registry = AttackRegistryUtils.getRegistry(
-                attackConfiguration, null
+                attackConfiguration, null,
+                new DefaultAttackProcessor()
         );
         Assertions.assertFalse(registry.attackers().isEmpty());
         registry.getRegistry().values().forEach(attacker -> {
@@ -62,7 +65,8 @@ class AttackRegistryUtilsTest {
                 AttackConfiguration.class
         );
         final var registry = AttackRegistryUtils.getRegistry(
-                attackConfiguration, new TestableCustomFactory()
+                attackConfiguration, new TestableCustomFactory(),
+                new DefaultAttackProcessor()
         );
         Assertions.assertFalse(registry.attackers().isEmpty());
         registry.getRegistry().values().forEach(attacker -> {
@@ -79,7 +83,7 @@ class AttackRegistryUtilsTest {
         @Override
         public Optional<Attacker> getAttacker(String attackName, CustomAttackProperties attackProperties) {
             return attackName.equalsIgnoreCase("customAttack") ?
-                    Optional.of(new ExceptionAttacker(new ExceptionAttackProperties())) : Optional.empty();
+                    Optional.of(new ExceptionAttacker(new ExceptionAttackProperties(), new DefaultAttackProcessor())) : Optional.empty();
         }
     }
 }

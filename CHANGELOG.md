@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [0.0.1-RC4]
+
+- Introduced an AttackProcessor, which will be invoked with attackMetaData as you start an attack
+- An attackPredicate can now be supplied during bundle init, and can be used as is. 
+
 #### [0.0.1-RC3]
 
 - Introduced attackCriteria, with time and percentage bounds

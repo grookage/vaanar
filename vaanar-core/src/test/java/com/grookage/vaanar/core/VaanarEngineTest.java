@@ -16,6 +16,7 @@
 
 package com.grookage.vaanar.core;
 
+import com.grookage.vaanar.core.attack.DefaultAttackProcessor;
 import com.grookage.vaanar.core.registry.AttackConfiguration;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +31,7 @@ class VaanarEngineTest {
                 "attackConfigurationDisabled.json",
                 AttackConfiguration.class
         );
-        final var vaanarEngine = new VaanarEngine(attackConfiguration, null);
+        final var vaanarEngine = new VaanarEngine(attackConfiguration, null, new DefaultAttackProcessor());
         Assertions.assertTrue(vaanarEngine.getAttackRegistry().attackers().isEmpty());
     }
 
@@ -41,7 +42,7 @@ class VaanarEngineTest {
                 "attackConfiguration.json",
                 AttackConfiguration.class
         );
-        final var vaanarEngine = new VaanarEngine(attackConfiguration, null);
+        final var vaanarEngine = new VaanarEngine(attackConfiguration, null, new DefaultAttackProcessor());
         Assertions.assertFalse(vaanarEngine.getAttackRegistry().attackers().isEmpty());
         vaanarEngine.getAttackRegistry().getRegistry().values().forEach(attacker -> {
             Assertions.assertTrue(attacker.getExecutors().isEmpty());

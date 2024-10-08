@@ -40,6 +40,10 @@ class AbstractAttackerTest {
         private final AtomicReference<Boolean> attacked =
                 new AtomicReference<>(false);
 
+        public TestableAttacker() {
+            super(new DefaultAttackProcessor());
+        }
+
         @Override
         @SneakyThrows
         public AttackProperties getAttackProperties() {
@@ -53,5 +57,6 @@ class AbstractAttackerTest {
         public void attack() {
             attacked.set(true);
         }
+
     }
 }

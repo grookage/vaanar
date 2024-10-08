@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractAttacker implements Attacker {
 
     private static final Map<String, AttackExecutor> executors = new ConcurrentHashMap<>();
-    private static final AttackPredicate ELIGIBILITY = new AttackPredicate();
+    private final AttackProcessor attackProcessor;
 
     public String name() {
         return getAttackProperties().getName();
@@ -40,11 +40,11 @@ public abstract class AbstractAttacker implements Attacker {
 
     public synchronized void setupAttack() {
         final var attackProperties = getAttackProperties();
-        if (!ELIGIBILITY.test(attackProperties)) return;
+        if (!attackProcessor.eligible(attackProperties)) return;
         final var that = this;
-        final var executor = new AttackExecutor(() -> that);
-        executor.start();
         final var attackId = UUID.randomUUID().toString();
+        final var executor = new AttackExecutor(attackId, () -> that, attackProcessor);
+        executor.start();
         executors.put(attackId, executor);
     }
 

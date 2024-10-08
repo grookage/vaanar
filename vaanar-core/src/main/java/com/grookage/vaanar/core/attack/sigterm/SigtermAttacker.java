@@ -17,18 +17,21 @@
 package com.grookage.vaanar.core.attack.sigterm;
 
 import com.grookage.vaanar.core.attack.AbstractAttacker;
-import lombok.Data;
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-@Data
+@Getter
 public class SigtermAttacker extends AbstractAttacker {
 
     private final SigtermAttackProperties attackProperties;
 
-    public SigtermAttacker(SigtermAttackProperties attackProperties) {
+    public SigtermAttacker(SigtermAttackProperties attackProperties,
+                           AttackProcessor attackProcessor) {
+        super(attackProcessor);
         this.attackProperties = attackProperties;
     }
 

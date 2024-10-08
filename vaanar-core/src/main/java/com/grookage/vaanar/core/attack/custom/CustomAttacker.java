@@ -17,6 +17,11 @@
 package com.grookage.vaanar.core.attack.custom;
 
 import com.grookage.vaanar.core.attack.AbstractAttacker;
+import com.grookage.vaanar.core.attack.AttackProcessor;
 
 public abstract class CustomAttacker extends AbstractAttacker {
+
+    public CustomAttacker(AttackProcessor attackProcessor) {
+        super(attackProcessor);
+    }
 }

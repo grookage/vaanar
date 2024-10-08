@@ -16,20 +16,15 @@
 
 package com.grookage.vaanar.core.attack;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public interface AttackProcessor {
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Data
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class AttackReport {
-    private String attackId;
-    private AttackProperties attackProperties;
-    private long startedAt;
-    private long executedAt;
+    boolean eligible(AttackProperties properties);
+
+    //May also need attackReport in the future.
+    void beforeAttack(final String attackId,
+                      final AttackProperties attackProperties);
+
+    void afterAttack(final String attackId,
+                     final AttackProperties attackProperties);
+
 }

@@ -17,6 +17,7 @@
 package com.grookage.vaanar.core.registry;
 
 import com.grookage.vaanar.core.ResourceHelper;
+import com.grookage.vaanar.core.attack.DefaultAttackProcessor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,8 @@ class AttackRegistryTest {
                 AttackConfiguration.class
         );
         final var registry = AttackRegistryUtils.getRegistry(
-                attackConfiguration, new AttackRegistryUtilsTest.TestableCustomFactory()
+                attackConfiguration, new AttackRegistryUtilsTest.TestableCustomFactory(),
+                new DefaultAttackProcessor()
         );
         Assertions.assertNotNull(registry);
         Assertions.assertNotNull(registry.getAttacker("customAttack").orElse(null));

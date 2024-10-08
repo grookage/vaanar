@@ -19,8 +19,9 @@
 package com.grookage.vaanar.core.attack.memory;
 
 import com.grookage.vaanar.core.attack.AbstractAttacker;
-import lombok.Data;
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -30,13 +31,15 @@ import java.util.stream.IntStream;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-@Data
+@Getter
 public class MemoryAttacker extends AbstractAttacker {
 
     private static final AtomicLong stolenMemory = new AtomicLong(0);
     private final MemoryAttackProperties attackProperties;
 
-    public MemoryAttacker(MemoryAttackProperties attackProperties) {
+    public MemoryAttacker(MemoryAttackProperties attackProperties,
+                          AttackProcessor attackProcessor) {
+        super(attackProcessor);
         this.attackProperties = attackProperties;
     }
 

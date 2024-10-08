@@ -16,6 +16,7 @@
 
 package com.grookage.vaanar.core;
 
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import com.grookage.vaanar.core.attack.Attacker;
 import com.grookage.vaanar.core.attack.custom.CustomAttackerFactory;
 import com.grookage.vaanar.core.registry.AttackConfiguration;
@@ -33,10 +34,11 @@ public class VaanarEngine {
     private final AttackRegistry attackRegistry;
 
     public VaanarEngine(AttackConfiguration attackConfiguration,
-                        CustomAttackerFactory attackerFactory) {
+                        CustomAttackerFactory attackerFactory,
+                        AttackProcessor attackProcessor) {
         this.attackConfiguration = attackConfiguration;
         this.attackerFactory = attackerFactory;
-        this.attackRegistry = AttackRegistryUtils.getRegistry(attackConfiguration, attackerFactory);
+        this.attackRegistry = AttackRegistryUtils.getRegistry(attackConfiguration, attackerFactory, attackProcessor);
         this.start();
     }
 

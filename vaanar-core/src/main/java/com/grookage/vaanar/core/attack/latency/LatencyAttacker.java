@@ -17,18 +17,21 @@
 package com.grookage.vaanar.core.attack.latency;
 
 import com.grookage.vaanar.core.attack.AbstractAttacker;
-import lombok.Data;
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-@Data
+@Getter
 public class LatencyAttacker extends AbstractAttacker {
 
     private final LatencyAttackProperties attackProperties;
 
-    public LatencyAttacker(LatencyAttackProperties attackProperties) {
+    public LatencyAttacker(LatencyAttackProperties attackProperties,
+                           AttackProcessor attackProcessor) {
+        super(attackProcessor);
         this.attackProperties = attackProperties;
     }
 

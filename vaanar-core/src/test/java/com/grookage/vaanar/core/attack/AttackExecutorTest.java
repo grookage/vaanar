@@ -24,7 +24,9 @@ class AttackExecutorTest {
     @Test
     void testAttackExecutor() {
         final var attacker = new AbstractAttackerTest.TestableAttacker();
-        final var executor = new AttackExecutor(() -> attacker);
+        final var executor = new AttackExecutor("attack1",
+                () -> attacker,
+                new DefaultAttackProcessor());
         Assertions.assertNotNull(executor);
         executor.start();
         Assertions.assertNull(executor.getExecutorFuture());

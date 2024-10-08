@@ -19,20 +19,23 @@
 package com.grookage.vaanar.core.attack.cpu;
 
 import com.grookage.vaanar.core.attack.AbstractAttacker;
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import com.grookage.vaanar.core.attack.AttackUtils;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-@Data
+@Getter
 public class CPUAttacker extends AbstractAttacker {
 
     private final CPUAttackProperties attackProperties;
     private final CPUThreadManager threadManager;
 
-    public CPUAttacker(final CPUAttackProperties attackProperties) {
+    public CPUAttacker(final CPUAttackProperties attackProperties,
+                       final AttackProcessor attackProcessor) {
+        super(attackProcessor);
         this.attackProperties = attackProperties;
         this.threadManager = new CPUThreadManager(attackProperties);
     }
@@ -58,4 +61,5 @@ public class CPUAttacker extends AbstractAttacker {
         threadManager.stop();
         log.info("Vaanar : Stopped the CPU Monkey");
     }
+
 }

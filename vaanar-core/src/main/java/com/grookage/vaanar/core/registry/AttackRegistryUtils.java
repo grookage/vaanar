@@ -17,6 +17,7 @@
 package com.grookage.vaanar.core.registry;
 
 
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import com.grookage.vaanar.core.attack.AttackProperties;
 import com.grookage.vaanar.core.attack.AttackPropertyAcceptor;
 import com.grookage.vaanar.core.attack.Attacker;
@@ -41,14 +42,15 @@ public class AttackRegistryUtils {
 
     public static AttackRegistry getRegistry(
             final AttackConfiguration attackConfiguration,
-            final CustomAttackerFactory additionalAttackers
+            final CustomAttackerFactory additionalAttackers,
+            final AttackProcessor attackProcessor
     ) {
         final var attackRegistry = new AttackRegistry();
         final var attackProperties = attackConfiguration.getAttackProperties();
         if (attackConfiguration.isEnableDestruction() &&
                 null != attackProperties) {
             attackProperties.forEach(attackProperty -> {
-                final var probableAttacker = getAttacker(attackProperty, additionalAttackers);
+                final var probableAttacker = getAttacker(attackProperty, additionalAttackers, attackProcessor);
                 probableAttacker.ifPresent(attacker -> attackRegistry.addAttacker(attackProperty.getName(), attacker));
             });
         }
@@ -57,12 +59,13 @@ public class AttackRegistryUtils {
 
     public static Optional<Attacker> getAttacker(
             final AttackProperties attackProperty,
-            final CustomAttackerFactory additionalAttackers
+            final CustomAttackerFactory additionalAttackers,
+            final AttackProcessor attackProcessor
     ) {
         return attackProperty.accept(new AttackPropertyAcceptor<>() {
             @Override
             public Optional<Attacker> accept(CPUAttackProperties properties) {
-                return Optional.of(new CPUAttacker(properties));
+                return Optional.of(new CPUAttacker(properties, attackProcessor));
             }
 
             @Override
@@ -75,22 +78,22 @@ public class AttackRegistryUtils {
 
             @Override
             public Optional<Attacker> accept(ExceptionAttackProperties properties) {
-                return Optional.of(new ExceptionAttacker(properties));
+                return Optional.of(new ExceptionAttacker(properties, attackProcessor));
             }
 
             @Override
             public Optional<Attacker> accept(LatencyAttackProperties properties) {
-                return Optional.of(new LatencyAttacker(properties));
+                return Optional.of(new LatencyAttacker(properties, attackProcessor));
             }
 
             @Override
             public Optional<Attacker> accept(MemoryAttackProperties properties) {
-                return Optional.of(new MemoryAttacker(properties));
+                return Optional.of(new MemoryAttacker(properties, attackProcessor));
             }
 
             @Override
             public Optional<Attacker> accept(SigtermAttackProperties properties) {
-                return Optional.of(new SigtermAttacker(properties));
+                return Optional.of(new SigtermAttacker(properties, attackProcessor));
             }
         });
     }

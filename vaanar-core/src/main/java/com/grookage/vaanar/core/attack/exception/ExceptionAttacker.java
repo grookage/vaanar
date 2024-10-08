@@ -17,19 +17,22 @@
 package com.grookage.vaanar.core.attack.exception;
 
 import com.grookage.vaanar.core.attack.AbstractAttacker;
-import lombok.Data;
+import com.grookage.vaanar.core.attack.AttackProcessor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-@Data
+@Getter
 public class ExceptionAttacker extends AbstractAttacker {
 
     private final ExceptionAttackProperties attackProperties;
 
-    public ExceptionAttacker(final ExceptionAttackProperties attackProperties) {
+    public ExceptionAttacker(final ExceptionAttackProperties attackProperties,
+                             final AttackProcessor attackProcessor) {
+        super(attackProcessor);
         this.attackProperties = attackProperties;
     }
 

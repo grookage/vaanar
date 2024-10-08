@@ -16,6 +16,8 @@
 
 package com.grookage.vaanar.dw.interceptors;
 
+import com.grookage.vaanar.core.attack.AttackExecutor;
+import com.grookage.vaanar.core.attack.AttackProperties;
 import com.grookage.vaanar.core.attack.criteria.AttackPredicate;
 import com.grookage.vaanar.core.attack.interceptor.AttackFunction;
 import com.grookage.vaanar.core.registry.AttackRegistry;
@@ -25,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -32,7 +35,7 @@ import java.util.function.Supplier;
 public class AttackFunctionInterceptor implements MethodInterceptor {
 
     private final Supplier<AttackRegistry> registrySupplier;
-    private final AttackPredicate criteria;
+    private final Predicate<AttackProperties> criteria;
 
     @Override
     @SneakyThrows
@@ -41,7 +44,7 @@ public class AttackFunctionInterceptor implements MethodInterceptor {
         if (null != attackName) {
             final var attacker = registrySupplier.get().getAttacker(attackName.name()).orElse(null);
             if (null != attacker && criteria.test(attacker.getAttackProperties())) {
-                attacker.attack();
+                attacker.setupAttack();
             }
         }
         return methodInvocation.proceed();
