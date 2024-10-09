@@ -21,7 +21,7 @@ and [Chaos Monkey for Spring Boot](https://github.com/codecentric/chaos-monkey-s
 <dependency>
     <groupId>com.grookage.vaanar</groupId>
     <artifactId>vaanar-bom</artifactId>
-    <versio>0.0.1-RC4</version>
+    <versio>latest</version>
 </dependency>
 ```
 
